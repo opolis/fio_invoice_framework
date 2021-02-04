@@ -11,6 +11,11 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class MemberLLC(BaseModel):
+    user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
+    name = models.CharField(max_length=200, blank=True)
+
+
 class Payment(BaseModel):
 
     PAYMENT_STATUS_PENDING = 'PENDING'
@@ -28,7 +33,7 @@ class Payment(BaseModel):
     PAYMENT_TYPE_CHEQUE = 'CHEQUE'
     PAYMENT_TYPE_CHOICES = [
         (PAYMENT_TYPE_DWOLLA_ACH, 'ACH'),
-        (PAYMENT_TYPE_CRYPTO, 'ETH'),
+        (PAYMENT_TYPE_CRYPTO, 'Crypto'),
         (PAYMENT_TYPE_CHEQUE, 'Cheque'),
     ]
     PAYMENT_CURRENCY_TYPE_USD = 'USD'
@@ -44,20 +49,16 @@ class Payment(BaseModel):
     ]
 
     status = models.CharField(null=True, blank=True, max_length=25, choices=PAYMENT_STATUS_CHOICES)
-    payment_type = models.CharField(max_length=100, choices=PAYMENT_TYPE_CHOICES, null=True, blank=True)
+    type = models.CharField(max_length=100, choices=PAYMENT_TYPE_CHOICES, null=True, blank=True)
     amount = models.DecimalField(null=True, blank=True, decimal_places=20, max_digits=40, default=None)
     currency = models.CharField(null=True, max_length=10, choices=PAYMENT_CURRENCY_TYPES)
+    exchange_rate_in_usd = models.DecimalField(null=True, blank=True, decimal_places=20, max_digits=40, default=None)
 
     # external tx id like tx_hash
     external_unique_id = models.CharField(max_length=200, null=True)
 
-    timestamp_created = models.DateTimeField(auto_now_add=True)
-    processed_at = models.DateTimeField(null=True, blank=True)
 
-
-class Payroll(BaseModel):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='payroll')
-
+class Invoice(BaseModel):
     STATUS_PENDING = 'STATUS_PENDING'
     STATUS_PAYMENT_SCHEDULED = 'STATUS_PAYMENT_SCHEDULED'
     STATUS_PAYMENT_PENDING = 'STATUS_PAYMENT_PENDING'
@@ -82,6 +83,7 @@ class Payroll(BaseModel):
         (TYPE_BONUS, 'Bonus'),
     ]
 
+    member_llc = models.ForeignKey(MemberLLC, null=True, on_delete=models.SET_NULL)
     status = models.CharField(null=True, blank=True, max_length=25, choices=STATUS_CHOICES)
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, default=TYPE_PAYROLL)
     payment_amount = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=14, default=None)
