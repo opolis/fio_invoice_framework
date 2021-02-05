@@ -61,3 +61,22 @@ This model contains all invoice related information for a MemberLLC
  
  c. run the migrations
  > python manage.py migrate
+
+##Deliverables:
+- Fork and add support for the above features to the specified repository
+
+- Update the Readme with a brief explanation of your solution, and any additional documentation you wish to provide
+
+- Write tests as needed to show your system is functional
+
+- Only applications written in Python and Django will be considered
+
+- Include failure states and status tracking of the invoice and their payments
+
+##Resources:
+
+- https://developers.fioprotocol.io/
+
+- https://developers.fioprotocol.io/api/api-spec
+
+- https://github.com/fioprotocol/fiosdk_typescript
