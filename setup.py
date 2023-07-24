@@ -14,7 +14,7 @@ setup(
     url='https://github.com/opolis/fio_invoice_framework',
     include_package_data=True,
     install_requires=[
-        "Django==3.1.6",
+        "Django==3.1.14",
     ],
     python_requires='>=3.6,<4',
     license="MIT",
